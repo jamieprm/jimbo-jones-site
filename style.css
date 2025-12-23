@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #fafafa;
-  color: #222;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, monospace;
+  background: #222;
+  color: #fafafa
 }
 
 main {
@@ -13,11 +13,13 @@ main {
 
 h1 {
   font-size: 2.5rem;
+  font-family: sans-serif;
   margin-bottom: 0.5rem;
 }
 
 nav {
   margin: 2rem 0;
+  font-family: sans-serif;
 }
 
 nav a {
@@ -32,4 +34,5 @@ nav a:hover {
 
 section {
   margin-top: 3rem;
+  font-family: sans-serif;
 }
