@@ -6,39 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css">
 </head>
+
+<script>
+  const dropdown = document.querySelector('.dropdown');
+  const toggle = dropdown.querySelector('.dropdown-toggle');
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+    toggle.setAttribute(
+      'aria-expanded',
+      dropdown.classList.contains('open')
+    );
+  });
+
+  document.addEventListener('click', () => {
+    dropdown.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+</script>
+
 <body>
   <nav>
   <ul class="nav">
-    <li class="dropdown">
-      <a href="#" aria-haspopup="true" aria-expanded="false">Projects</a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="we-only-want.html">
-            We Only Want...
-          </a>
-        </li>
-        <li>
-          <a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown">
-            The Heat Death of My Hometown
-          </a>
-        </li>
-        <li>
-          <a href="https://www.lintenafarraige.ie/" target="_blank">
-            Línte na Farraige
-          </a>
-        </li>
-        <li>
-          <a href="https://ann-upton.com/projects/the-looking-game/" target="_blank">
-            The Looking Game
-          </a>
-        </li>
-        <li>
-          <a href="https://www.instagram.com/tapeoflifespan/" target="_blank">
-            Tape of Life
-          </a>
-        </li>
-      </ul>
-    </li>
+<li class="dropdown">
+  <button class="dropdown-toggle" aria-expanded="false">
+    Projects
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="we-only-want.html">We Only Want…</a></li>
+    <li><a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown" target="_blank">The Heat Death of My Hometown</a></li>
+    <li><a href="https://www.lintenafarraige.ie/" target="_blank">Línte na Farraige</a></li>
+    <li><a href="https://ann-upton.com/projects/the-looking-game/" target="_blank">The Looking Game</a></li>
+    <li><a href="https://www.instagram.com/tapeoflifespan/" target="_blank">Tape of Life</a></li>
+  </ul>
+</li>
     <li>
       <a href="https://jimbojonesdub.bandcamp.com" target="_blank">Music</a>
     </li>
