@@ -1,38 +1,84 @@
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #222;
-  color: #fafafa
+  color: #fafafa;
 }
 
 main {
   max-width: 700px;
   padding: 2rem;
-  margin: auto;
+  margin: 4rem auto 0;
+  text-align: center;
 }
 
 h1 {
   font-size: 2.5rem;
-  font-family: sans-serif;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
+/* Navigation */
 nav {
-  margin: 2rem 0;
-  font-family: sans-serif;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1rem 2rem;
 }
 
-nav a {
-  margin-right: 1rem;
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.nav > li {
+  position: relative;
+}
+
+.nav a {
   text-decoration: none;
-  color: #555;
+  color: #fafafa;
+  font-size: 0.95rem;
 }
 
-nav a:hover {
-  color: #000;
+.nav a:hover {
+  color: #ccc;
 }
 
-section {
-  margin-top: 3rem;
-  font-family: sans-serif;
+/* Dropdown */
+.dropdown-menu {
+  position: absolute;
+  top: 1.8rem;
+  right: 0;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  background: #111;
+  border: 1px solid #444;
+  min-width: 220px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #fafafa;
+}
+
+.dropdown-menu a:hover {
+  background: #333;
+}
+
+/* Show dropdown */
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
