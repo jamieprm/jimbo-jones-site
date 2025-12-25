@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #222;
   color: #fafafa;
 }
@@ -9,7 +9,7 @@ main {
   max-width: 700px;
   padding: 2rem;
   margin: 4rem auto 0;
-  text-align: center;
+  text-align: left;
 }
 
 h1 {
@@ -22,7 +22,7 @@ nav {
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1rem;
 }
 
 .nav {
@@ -30,7 +30,7 @@ nav {
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 1.5rem;
 }
 
