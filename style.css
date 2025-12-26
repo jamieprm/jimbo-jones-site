@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #222;
+  background: #000000;
   color: #fafafa;
 }
 
@@ -30,22 +30,21 @@ nav a:hover {
 /* Dropdown */
 .dropdown {
   position: relative;
+  display: inline-block;
+}
+
+.dropdown > a {
+  display: inline-block;
+  padding: 0.25rem 0;
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 1.8rem;
-  left: 0;
-
-  list-style: none;
-  margin: 0;
-  padding: 0.5rem 0;
-  min-width: 240px;
-
-  background: #fff;
-  border: 1px solid #ddd;
-
   display: none;
+  position: absolute;
+  min-width: 240px;
+  list-style: none;
+  background: #fff;
+
 }
 
 .dropdown-menu a {
