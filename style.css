@@ -29,7 +29,7 @@ h1 {
 }
 .nav li {
   margin: 0;
-  padding: 0;
+  padding: 0.25rem 0;
 }
 
 nav a {
