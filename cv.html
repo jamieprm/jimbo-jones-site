@@ -7,41 +7,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<script>
-  const dropdown = document.querySelector('.dropdown');
-  const toggle = dropdown.querySelector('.dropdown-toggle');
-
-  toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle('open');
-    toggle.setAttribute(
-      'aria-expanded',
-      dropdown.classList.contains('open')
-    );
-  });
-
-  document.addEventListener('click', () => {
-    dropdown.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-  });
-</script>
-
 <body>
-
 <nav>
   <ul class="nav">
-  <li class="dropdown">
-  <button class="dropdown-toggle" aria-expanded="false">
-    Projects
-  </button>
-  <ul class="dropdown-menu">
-    <li><a href="we-only-want.html">We Only Want…</a></li>
-    <li><a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown" target="_blank">The Heat Death of My Hometown</a></li>
-    <li><a href="https://www.lintenafarraige.ie/" target="_blank">Línte na Farraige</a></li>
-    <li><a href="https://ann-upton.com/projects/the-looking-game/" target="_blank">The Looking Game</a></li>
-    <li><a href="https://www.instagram.com/tapeoflifespan/" target="_blank">Tape of Life</a></li>
-  </ul>
-</li>
+    <li class="dropdown">
+      <a href="#">Projects</a>
+      <ul class="dropdown-menu">
+        <li><a href="we-only-want.html">We Only Want…</a></li>
+        <li><a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown" target="_blank">The Heat Death of My Hometown</a></li>
+        <li><a href="https://www.lintenafarraige.ie/" target="_blank">Línte na Farraige</a></li>
+        <li><a href="https://ann-upton.com/projects/the-looking-game/" target="_blank">The Looking Game</a></li>
+        <li><a href="https://www.instagram.com/tapeoflifespan/" target="_blank">Tape of Life</a></li>
+      </ul>
+    </li>
+
     <li><a href="https://jimbojonesdub.bandcamp.com" target="_blank">Music</a></li>
     <li><a href="cv.html">CV</a></li>
     <li><a href="mailto:jamieprm@gmail.com">Contact</a></li>
@@ -60,17 +39,17 @@
 
   <h3>Music</h3>
   <p>
-    <a href="https://www.beatport.com/release/hotseat-vol-3/3676397" target="_blank">Hot Seat Vol. 3</a> — Hotseat Recordings [May 2022]<br>
-    <a href="https://jimbojonesdub.bandcamp.com/album/have-pass-will-travel" target="_blank">Have Pass, Will Travel</a> — Self-release [Dec 2021]<br>
-    <a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown" target="_blank">The Heat Death of My Hometown</a> — Self-release [Feb 2021]<br>
-    <a href="https://www.beatport.com/release/hotseat-vol-1/3053579" target="_blank">Hot Seat Vol. 1</a> — Hotseat Recordings [Aug 2020]
+    <a href="https://www.beatport.com/release/hotseat-vol-3/3676397" target="_blank"><strong>Hot Seat Vol. 3</strong></a> — Hotseat Recordings [May 2022]<br>
+    <a href="https://jimbojonesdub.bandcamp.com/album/have-pass-will-travel" target="_blank"><strong>Have Pass, Will Travel</strong></a> — Self-release [Dec 2021]<br>
+    <a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown" target="_blank"><strong>The Heat Death of My Hometown</strong></a> — Self-release [Feb 2021]<br>
+    <a href="https://www.beatport.com/release/hotseat-vol-1/3053579" target="_blank"><strong>Hot Seat Vol. 1</strong></a> — Hotseat Recordings [Aug 2020]
   </p>
 
   <h3>Video</h3>
   <p>
-    <a href="https://ann-upton.com/projects/the-looking-game/" target="_blank">The Looking Game</a> — Film score [July 2023]<br>
-    <a href="https://www.youtube.com/watch?v=8CLqGL6wjy4" target="_blank">Almost Post Coital</a> — Music video [Apr 2021]<br>
-    <a href="https://www.youtube.com/watch?v=gFWsANTpa38" target="_blank">DART</a> — Music video [Feb 2021]
+    <a href="https://ann-upton.com/projects/the-looking-game/" target="_blank"><strong>The Looking Game</strong></a> — Film score [July 2023]<br>
+    <a href="https://www.youtube.com/watch?v=8CLqGL6wjy4" target="_blank"><strong>Almost Post Coital</strong></a> — Music video [Apr 2021]<br>
+    <a href="https://www.youtube.com/watch?v=gFWsANTpa38" target="_blank"><strong>DART</strong></a> — Music video [Feb 2021]
   </p>
 <!--
   <h3>Print</h3>
