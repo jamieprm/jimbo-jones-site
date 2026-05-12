@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>We Only Want… — Jimbo Jones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body.wow-page {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .wow-container {
+      position: relative;
+      width: 100%;
+      height: 300vh;
+    }
+
+    .wow-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-image: url('Images/WOWTE_background_black.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: 1;
+    }
+
+    .wow-reveal-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .wow-reveal-image {
+      position: absolute;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('Images/WOWTE_background_black:white.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: bottom 0.1s ease-out;
+    }
+
+    .wow-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .wow-content {
+      position: fixed;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+      pointer-events: none;
+    }
+
+    .wow-content.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wow-content h2 {
+      font-size: 1.5rem;
+      margin: 0 0 2rem 0;
+      color: #fafafa;
+      font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .wow-prompt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .wow-prompt p {
+      margin: 0;
+      color: #fafafa;
+      font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+    }
+
+    .wow-input-wrapper {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .wow-input {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      align-items: center;
+      text-align: center;
+      color: #666;
+      caret-color: #666;
+      font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1.2rem;
+      min-width: 250px;
+    }
+
+    .wow-input:focus {
+      outline: none;
+    }
+
+    .wow-input::placeholder {
+      color: #666;
+    }
+
+    .wow-button {
+      padding: 0.5rem 1.5rem;
+      border: 1px solid #fafafa;
+      background: transparent;
+      color: #fafafa;
+      font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .wow-button:hover {
+      background: #fafafa;
+      color: #000;
+    }
+
+    .wow-message {
+      color: #ccc;
+      margin-top: 1rem;
+      min-height: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .wow-message.success {
+      color: #ccc;
+    }
+
+    .wow-revealed .wow-reveal-image {
+      bottom: 0;
+    }
+
+    .wow-revealed .wow-overlay {
+      background: rgba(0, 0, 0, 0);
+      pointer-events: none;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      width: 100%;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+
+    .nav li {
+      margin: 0;
+      padding: 0.25rem 0;
+    }
+
+    nav a {
+      color: #fafafa;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: #ccc;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown > a {
+      display: inline-block;
+      padding: 0.25rem 0;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      min-width: 240px;
+      list-style: none;
+      background: #fff;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #000;
+      text-decoration: none;
+    }
+
+    .dropdown-menu a:hover {
+      background: #eee;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="wow-page">
+
+<div class="wow-container">
+  <div class="wow-background"></div>
+  
+  <div class="wow-reveal-wrapper">
+    <div class="wow-reveal-image"></div>
+  </div>
+
+  <div class="wow-overlay"></div>
+
+  <div class="wow-content">
+    <h2>we only want</h2>
+    <div class="wow-prompt">
+      <div class="wow-input-wrapper">
+        <input 
+          type="text" 
+          class="wow-input" 
+          id="passwordInput" 
+          placeholder=""
+          autocomplete="off"
+        />
+        <!-- <button class="wow-button" id="submitBtn">Submit</button> -->
+      </div>
+      <div class="wow-message" id="message"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const container = document.querySelector('.wow-container');
+  const revealImage = document.querySelector('.wow-reveal-image');
+  const content = document.querySelector('.wow-content');
+  const overlay = document.querySelector('.wow-overlay');
+  const passwordInput = document.getElementById('passwordInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const message = document.getElementById('message');
+  const wowWrapper = document.querySelector('.wow-reveal-wrapper');
+
+  let isUnlocked = false;
+
+  function handleScroll() {
+    const scrolled = window.scrollY;
+    const containerHeight = container.clientHeight;
+    const scrollPercent = scrolled / containerHeight;
+
+    // Reveal image from bottom up - stops at 50% scroll
+    const revealPercent = Math.min(scrollPercent * 2, 1);
+    revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
+
+    // Show content at 50% scroll
+    if (scrollPercent >= 0.5) {
+      content.classList.add('visible');
+    } else {
+      content.classList.remove('visible');
+    }
+
+    // Change overlay opacity based on scroll
+    const overlayOpacity = Math.max(0.3 - (scrollPercent * 0.5), 0);
+    overlay.style.background = `rgba(0, 0, 0, 0)`;//${overlayOpacity}
+  }
+
+  function checkPassword() {
+    const answer = passwordInput.value.toLowerCase().trim();
+    
+    if (answer === 'the earth') {
+      isUnlocked = true;
+      wowWrapper.classList.add('wow-revealed');
+      message.textContent = 'Unlocked.';
+      message.classList.add('success');
+      passwordInput.disabled = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+      }
+      passwordInput.style.opacity = '0.5';
+    } else {
+      message.textContent = 'Wrong password. Find password at this location.';
+      message.classList.remove('success');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', checkPassword);
+  }
+  
+  passwordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      checkPassword();
+    }
+  });
+
+  window.addEventListener('scroll', handleScroll);
+
+  // Focus input when it becomes visible
+  const observer = new MutationObserver(() => {
+    if (content.classList.contains('visible') && !isUnlocked) {
+      passwordInput.focus();
+    }
+  });
+
+  observer.observe(content, { attributes: true, attributeFilter: ['class'] });
+</script>
+
+</body>
+</html>
