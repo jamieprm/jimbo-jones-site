@@ -6,6 +6,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css">
   <style>
+    
+    @keyframes floatAround {
+      0% {
+        transform: translate(0, 0) scale(1.05);
+      }
+      12% {
+        transform: translate(15px, -12px) scale(1.05);
+      }
+      25% {
+        transform: translate(8px, 18px) scale(1.05);
+      }
+      37% {
+        transform: translate(-18px, 10px) scale(1.05);
+      }
+      50% {
+        transform: translate(-12px, -15px) scale(1.05);
+      }
+      62% {
+        transform: translate(10px, -8px) scale(1.05);
+      }
+      75% {
+        transform: translate(14px, 12px) scale(1.05);
+      }
+      87% {
+        transform: translate(-10px, -10px) scale(1.05);
+      }
+      100% {
+        transform: translate(0, 0) scale(1.05);
+      }
+    }
+
     body.wow-page {
       margin: 0;
       padding: 0;
@@ -15,11 +46,12 @@
     .wow-container {
       position: relative;
       width: 100%;
-      height: 200vh;
+      height: 200vh; /* Make page taller to allow scrolling */
     }
 
     .wow-background {
       position: fixed;
+      display: flex;
       top: 0;
       left: 0;
       width: 100%;
@@ -29,7 +61,10 @@
       background-position: center;
       background-attachment: fixed;
       z-index: 1;
+      transform-origin: center;
+      /*animation: floatAround 12s ease-in-out infinite;*/
     }
+
 
     .wow-reveal-wrapper {
       position: fixed;
@@ -47,12 +82,13 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('Images/WOWTE_background_black:white.png');
+      background-image: url('Images/WOWTE_background_white.png');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       transition: bottom 0.1s ease-out;
     }
+
 
     .wow-overlay {
       position: fixed;
@@ -69,7 +105,7 @@
       position: fixed;
       top: calc(50%);
       left: 50%;
-      transform: translate(-50%, -1.5rem);
+      transform: translate(-50%, calc(-100% - 0.5rem));
       text-align: end;
       z-index: 4;
       opacity: 0;
@@ -94,7 +130,7 @@
       position: fixed;
       top: calc(50%);
       left: 50%;
-      transform: translate(-50%, calc(100% + 1.5rem));
+      transform: translate(-50%, calc(0% + 0.5rem));
       text-align: center;
       z-index: 4;
       opacity: 0;
@@ -141,7 +177,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2rem;
+      gap: 0rem;
     }
 
     .wow-prompt p {
@@ -334,12 +370,19 @@
     const containerHeight = container.clientHeight;
     const scrollPercent = scrolled / containerHeight;
 
+    // Lock scroll at 50% until password is correct
+    const maxScroll = (containerHeight * 0.5);
+    if (scrolled > maxScroll && !isUnlocked) {
+      window.scrollTo(0, maxScroll);
+      return;
+    }
+
     // Reveal image from bottom up - stops at 50% scroll
-    const revealPercent = Math.min(scrollPercent * 2, 1);
+    const revealPercent = Math.min(scrollPercent * 1, 1);
     revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
 
-    // Show content at 50% scroll
-    if (scrollPercent >= 0.4) {
+    // Show content at 50% scroll (after reveal completes)
+    if (scrollPercent >= 0.5) {
       wowTitle.classList.add('visible');
       wowPromptContainer.classList.add('visible');
     } else {
