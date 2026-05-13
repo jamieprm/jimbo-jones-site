@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #000000;
-  color: #fafafa;
+  background: #101719;
+  color: #e4e2dc;
 }
 
 main {
@@ -33,7 +33,7 @@ h1 {
 }
 
 nav a {
-  color: #fafafa;
+  color: #e5e7e3;
   text-decoration: none;
 }
 
@@ -64,7 +64,7 @@ nav a:hover {
 .dropdown-menu a {
   display: block;
   padding: 0.5rem 0rem;
-  color: #000;
+  color: #101719;
 }
 
 .dropdown-menu a:hover {

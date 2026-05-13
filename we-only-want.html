@@ -15,7 +15,7 @@
     .wow-container {
       position: relative;
       width: 100%;
-      height: 300vh;
+      height: 200vh;
     }
 
     .wow-background {
@@ -60,21 +60,69 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 1);
       z-index: 3;
       pointer-events: none;
     }
 
-    .wow-content {
+    .wow-title {
       position: fixed;
-      top: 60%;
+      top: calc(50%);
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -1.5rem);
+      text-align: end;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+      pointer-events: none;
+      margin-bottom: 0;
+    }
+
+    .wow-title.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wow-title h2 {
+      font-size: 1.5rem;
+      margin: 0;
+      color: #e4e2dc;
+      font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .wow-prompt-container {
+      position: fixed;
+      top: calc(50%);
+      left: 50%;
+      transform: translate(-50%, calc(100% + 1.5rem));
       text-align: center;
       z-index: 4;
       opacity: 0;
       transition: opacity 0.3s ease-out;
       pointer-events: none;
+      margin-top: 0;
+    }
+
+    .wow-prompt-container.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wow-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 0%);
+      text-align: bottom;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      vertical-align: bottom;
+      align-items: center;
+      justify-content: center;
     }
 
     .wow-content.visible {
@@ -84,8 +132,8 @@
 
     .wow-content h2 {
       font-size: 1.5rem;
-      margin: 0 0 2rem 0;
-      color: #fafafa;
+      margin: 0 0 1.5rem 0;
+      color: #e4e2dc;
       font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
@@ -93,12 +141,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 2rem;
     }
 
     .wow-prompt p {
       margin: 0;
-      color: #fafafa;
+      color: #e4e2dc;
       font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 1rem;
     }
@@ -116,8 +164,8 @@
       background: transparent;
       align-items: center;
       text-align: center;
-      color: #666;
-      caret-color: #666;
+      color: #101719;
+      caret-color: #101719;
       font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 1.2rem;
       min-width: 250px;
@@ -128,14 +176,14 @@
     }
 
     .wow-input::placeholder {
-      color: #666;
+      color: #101719;
     }
 
     .wow-button {
       padding: 0.5rem 1.5rem;
-      border: 1px solid #fafafa;
+      border: 1px solid #e4e2dc;
       background: transparent;
-      color: #fafafa;
+      color: #e4e2dc;
       font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 1rem;
       cursor: pointer;
@@ -143,8 +191,8 @@
     }
 
     .wow-button:hover {
-      background: #fafafa;
-      color: #000;
+      background: #e4e2dc;
+      color: #101719;
     }
 
     .wow-message {
@@ -193,7 +241,7 @@
     }
 
     nav a {
-      color: #fafafa;
+      color: #e4e2dc;
       text-decoration: none;
     }
 
@@ -222,7 +270,7 @@
     .dropdown-menu a {
       display: block;
       padding: 0.5rem 1rem;
-      color: #000;
+      color: #101719;
       text-decoration: none;
     }
 
@@ -247,8 +295,11 @@
 
   <div class="wow-overlay"></div>
 
-  <div class="wow-content">
+  <div class="wow-title">
     <h2>we only want</h2>
+  </div>
+
+  <div class="wow-prompt-container">
     <div class="wow-prompt">
       <div class="wow-input-wrapper">
         <input 
@@ -260,7 +311,7 @@
         />
         <!-- <button class="wow-button" id="submitBtn">Submit</button> -->
       </div>
-      <div class="wow-message" id="message"></div>
+      <!-- <div class="wow-message" id="message"></div> -->
     </div>
   </div>
 </div>
@@ -268,7 +319,8 @@
 <script>
   const container = document.querySelector('.wow-container');
   const revealImage = document.querySelector('.wow-reveal-image');
-  const content = document.querySelector('.wow-content');
+  const wowTitle = document.querySelector('.wow-title');
+  const wowPromptContainer = document.querySelector('.wow-prompt-container');
   const overlay = document.querySelector('.wow-overlay');
   const passwordInput = document.getElementById('passwordInput');
   const submitBtn = document.getElementById('submitBtn');
@@ -287,16 +339,24 @@
     revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
 
     // Show content at 50% scroll
-    if (scrollPercent >= 0.5) {
-      content.classList.add('visible');
+    if (scrollPercent >= 0.4) {
+      wowTitle.classList.add('visible');
+      wowPromptContainer.classList.add('visible');
     } else {
-      content.classList.remove('visible');
+      wowTitle.classList.remove('visible');
+      wowPromptContainer.classList.remove('visible');
     }
 
     // Change overlay opacity based on scroll
-    const overlayOpacity = Math.max(0.3 - (scrollPercent * 0.5), 0);
-    overlay.style.background = `rgba(0, 0, 0, 0)`;//${overlayOpacity}
+    // const overlayOpacity = Math.max(0.3 - (scrollPercent * 0.5), 0);
+    // overlay.style.background = `rgba(0, 0, 0, 0)`;//${overlayOpacity}
   }
+
+  // Drop overlay to zero after 3 seconds from page load
+  setTimeout(() => {
+    overlay.style.transition = 'background 8s ease-out';
+    overlay.style.background = 'rgba(0, 0, 0, 0)';
+  }, 1000);
 
   function checkPassword() {
     const answer = passwordInput.value.toLowerCase().trim();
@@ -313,7 +373,7 @@
       }
       passwordInput.style.opacity = '0.5';
     } else {
-      message.textContent = 'Wrong password. Find password at this location.';
+      message.textContent = 'Wrong password. Find password in the poetry of James Connolly.';
       message.classList.remove('success');
       passwordInput.value = '';
       passwordInput.focus();
@@ -334,12 +394,18 @@
 
   // Focus input when it becomes visible
   const observer = new MutationObserver(() => {
-    if (content.classList.contains('visible') && !isUnlocked) {
+    if (wowPromptContainer.classList.contains('visible') && !isUnlocked) {
       passwordInput.focus();
+      // On mobile, scroll input into view at bottom to prevent keyboard cover
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          passwordInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 100);
+      }
     }
   });
 
-  observer.observe(content, { attributes: true, attributeFilter: ['class'] });
+  observer.observe(wowPromptContainer, { attributes: true, attributeFilter: ['class'] });
 </script>
 
 </body>
