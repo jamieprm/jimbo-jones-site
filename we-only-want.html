@@ -46,7 +46,7 @@
     .wow-container {
       position: relative;
       width: 100%;
-      height: 200vh; /* Make page taller to allow scrolling */
+      height: 400vh; /* Make page taller to allow scrolling */
     }
 
     .wow-background {
@@ -81,7 +81,7 @@
       bottom: -100%;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background-image: url('Images/WOWTE_background_white.png');
       background-size: cover;
       background-position: center;
@@ -107,7 +107,7 @@
       left: 50%;
       transform: translate(-50%, calc(-100% - 0.5rem));
       text-align: end;
-      z-index: 4;
+      z-index: 1;
       opacity: 0;
       transition: opacity 0.3s ease-out;
       pointer-events: none;
@@ -182,7 +182,7 @@
 
     .wow-prompt p {
       margin: 0;
-      color: #e4e2dc;
+      color: #edece8;
       font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 1rem;
     }
@@ -209,6 +209,11 @@
 
     .wow-input:focus {
       outline: none;
+      caret-color: #101719;
+    }
+
+    .wow-input.success {
+      color: #4d859d;
     }
 
     .wow-input::placeholder {
@@ -232,14 +237,14 @@
     }
 
     .wow-message {
-      color: #ccc;
+      color: #ae6039;
       margin-top: 1rem;
       min-height: 1.5rem;
       font-size: 0.9rem;
     }
 
     .wow-message.success {
-      color: #ccc;
+      color: #4d859d;
     }
 
     .wow-revealed .wow-reveal-image {
@@ -360,10 +365,33 @@
   const overlay = document.querySelector('.wow-overlay');
   const passwordInput = document.getElementById('passwordInput');
   const submitBtn = document.getElementById('submitBtn');
-  const message = document.getElementById('message');
   const wowWrapper = document.querySelector('.wow-reveal-wrapper');
+  
+  // Message display element
+  let message = document.createElement('div');
+  message.className = 'wow-message';
+  message.id = 'message';
+  passwordInput.parentElement.parentElement.appendChild(message);
 
   let isUnlocked = false;
+
+  // Blinking cursor effect
+  const cursorStyle = document.createElement('style');
+  cursorStyle.textContent = `
+    .wow-input:focus {
+      animation: cursorBlink 1s infinite;
+    }
+    
+    @keyframes cursorBlink {
+      0%, 49% {
+        caret-color: #101719;
+      }
+      50%, 100% {
+        caret-color: transparent;
+      }
+    }
+  `;
+  document.head.appendChild(cursorStyle);
 
   function handleScroll() {
     const scrolled = window.scrollY;
@@ -382,7 +410,7 @@
     revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
 
     // Show content at 50% scroll (after reveal completes)
-    if (scrollPercent >= 0.5) {
+    if (scrollPercent >= 0.4) {
       wowTitle.classList.add('visible');
       wowPromptContainer.classList.add('visible');
     } else {
@@ -406,18 +434,54 @@
     
     if (answer === 'the earth') {
       isUnlocked = true;
-      wowWrapper.classList.add('wow-revealed');
-      message.textContent = 'Unlocked.';
+      
+      // Smooth scroll to reveal the full image - scroll to 100% of container over 5 seconds
+      const containerHeight = container.clientHeight;
+      const scrollTo = containerHeight;
+      const startY = window.scrollY;
+      const distance = scrollTo - startY;
+      const duration = 4000; // 4 seconds
+      const startTime = Date.now();
+      
+      function animateScroll() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth acceleration
+        const easeProgress = progress < 0.5 
+          ? 2 * progress * progress 
+          : -1 + (4 - 2 * progress) * progress;
+        
+
+        setTimeout(() => {
+          window.scrollTo(0, startY + distance * easeProgress);
+        }, 2000); // ~60fps
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      }
+      
+      animateScroll();
+      
+      // Add revealed class after a brief delay
+      setTimeout(() => {
+        wowWrapper.classList.add('wow-revealed');
+      }, 100);
+      
+      message.textContent = '';
       message.classList.add('success');
+      passwordInput.classList.add('success');
       passwordInput.disabled = true;
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.5';
       }
-      passwordInput.style.opacity = '0.5';
+      // passwordInput.style.opacity = '0.5';
     } else {
-      message.textContent = 'Wrong password. Find password in the poetry of James Connolly.';
+      message.textContent = 'Wrong password...';
       message.classList.remove('success');
+      passwordInput.classList.remove('success');
       passwordInput.value = '';
       passwordInput.focus();
     }
@@ -438,12 +502,15 @@
   // Focus input when it becomes visible
   const observer = new MutationObserver(() => {
     if (wowPromptContainer.classList.contains('visible') && !isUnlocked) {
+      // Force focus to trigger mobile keyboard
       passwordInput.focus();
-      // On mobile, scroll input into view at bottom to prevent keyboard cover
+      passwordInput.click();
+      
+      // On mobile, ensure keyboard opens by scrolling input into view
       if (window.innerWidth <= 768) {
         setTimeout(() => {
-          passwordInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }, 100);
+          passwordInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
       }
     }
   });
