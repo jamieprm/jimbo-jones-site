@@ -81,3 +81,27 @@ nav a:hover {
 .dropdown:hover .dropdown-menu {
   display: block;
 }
+
+.fade-in {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation: fadeIn 5000ms ease-out  forwards 500ms;
+}
+
+.fade-in-1 {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation: fadeIn 5000ms ease-out forwards 2000ms;
+}
+
+.fade-in-2 {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation: fadeIn 5000ms ease-out forwards 3800ms;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
