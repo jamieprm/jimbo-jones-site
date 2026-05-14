@@ -96,7 +96,10 @@
 
     // Reveal image from bottom up - stops at 50% scroll
     const revealPercent = Math.min(scrollPercent * 1, 1);
-    revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
+    // was: revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
+    // revealImage.style.transform = `translateY(${100 - (revealPercent * 100)}%)`;
+    revealImage.style.clipPath = `inset(${100 - (revealPercent * 100)}% 0 0 0)`;
+
 
     // Show content at 50% scroll (after reveal completes)
     if (scrollPercent >= 0.45) {
