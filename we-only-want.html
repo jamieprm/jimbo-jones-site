@@ -18,7 +18,7 @@
 
   <div class="wow-overlay"></div>
 
-  <div class="wow-title">
+  <div class="wow-title" id="promptTitle">
     <h2>we only want</h2>
   </div>
 
@@ -42,6 +42,7 @@
 
 
 </div>
+
 <script>
   const container = document.querySelector('.wow-container');
   const revealImage = document.querySelector('.wow-reveal-image');
@@ -83,6 +84,25 @@
     const revealPercent = Math.min(scrollPercent * 2, 1);
     revealImage.style.clipPath = `inset(${100 - (revealPercent * 100)}% 0 0 0)`;
 
+    if (revealPercent > 0.6) {
+      const t = (revealPercent - 0.6) / 0.4; // 0 to 1 over the last 40%
+      const scale = 1 + t * 3; // zoom up to 115%
+      const opacity = 1 - t;
+      revealImage.style.transform = `scale(${scale})`;
+      revealImage.style.opacity = opacity;
+      document.querySelector('.wow-background').style.transform = `scale(${scale})`;
+      overlay.style.transition = 'background 4s ease-out';
+      overlay.style.background = `rgba(0, 0, 0, 1)`;
+      document.querySelector('.wow-title').style.opacity = 0;
+      document.querySelector('.passwordInput').style.opacity = opacity;
+    } else {
+      revealImage.style.transform = 'scale(1)';
+      revealImage.style.opacity = '1';
+      document.querySelector('.wow-background').style.transform = 'scale(1)';
+      document.querySelector('.wow-title').style.opacity = '1';
+      overlay.style.background = 'rgba(0, 0, 0, 0)';
+    }
+
     if (scrollPercent >= 0.2) {
       wowTitle.classList.add('visible');
       wowPromptContainer.classList.add('visible');
@@ -97,15 +117,14 @@
     overlay.style.background = 'rgba(0, 0, 0, 0)';
   }, 1000);
 
+  let hadWrongPassword = false;
+
   function checkPassword() {
     const answer = passwordInput.value.toLowerCase().trim();
-    
+
     if (answer === 'the earth') {
       isUnlocked = true;
       wowWrapper.classList.add('wow-revealed');
-      
-      message.textContent = '';
-      message.classList.add('success');
       passwordInput.classList.add('success');
       passwordInput.disabled = true;
       if (submitBtn) {
@@ -113,17 +132,23 @@
         submitBtn.style.opacity = '0.5';
       }
 
+      // Only fade out the wrong password message if one was shown
+      if (hadWrongPassword) {
+        message.style.transition = 'opacity 1s ease-out';
+        message.style.opacity = '0';
+      }
+
       const scrollTo = document.documentElement.scrollHeight - window.innerHeight;
       const startY = window.scrollY;
       const distance = scrollTo - startY;
-      const duration = 3000;
+      const duration = 4000;
       const startTime = Date.now();
-      
+
       function animateScroll() {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = progress < 0.5 
-          ? 2 * progress * progress 
+        const easeProgress = progress < 0.5
+          ? 2 * progress * progress
           : -1 + (4 - 2 * progress) * progress;
 
         window.scrollTo(0, startY + distance * easeProgress);
@@ -131,18 +156,17 @@
         if (progress < 1) {
           requestAnimationFrame(animateScroll);
         } else {
-          setTimeout(() => {
-            window.location.href = 'we-only-want-original-sin.html';
-          }, 500);
+          window.location.href = 'we-only-want-original-sin.html';
         }
       }
-      
+
       animateScroll();
 
     } else {
+      hadWrongPassword = true;
+      message.style.transition = 'none';
+      message.style.opacity = '1';
       message.textContent = 'Wrong password...';
-      message.classList.remove('success');
-      passwordInput.classList.remove('success');
       passwordInput.value = '';
       passwordInput.focus();
     }
