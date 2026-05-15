@@ -49,6 +49,44 @@
   const overlay = document.querySelector('.wow-overlay');
   const passwordInput = document.getElementById('passwordInput');
   const wowWrapper = document.querySelector('.wow-reveal-wrapper');
+
+  // Scroll hint
+  let scrollHintTimer;
+  const scrollHint = document.createElement('div');
+  scrollHint.id = 'scroll-hint';
+  scrollHint.textContent = 'scroll';
+  scrollHint.style.cssText = `
+    position: fixed;
+    top: calc(50% + 2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    color: #e4e2dc;
+    font-family: monospace;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    z-index: 10;
+    pointer-events: none;
+  `;
+  document.body.appendChild(scrollHint);
+
+  // Show after 10 seconds with no scrolling
+  scrollHintTimer = setTimeout(() => {
+    scrollHint.style.opacity = '0.5';
+  }, 5000);
+
+  // Fade out on first scroll
+  let hintDismissed = false;
+  window.addEventListener('scroll', () => {
+    if (!hintDismissed && window.scrollY > 0) {
+      hintDismissed = true;
+      clearTimeout(scrollHintTimer);
+      scrollHint.style.transition = 'opacity 5s ease-out';
+      scrollHint.style.opacity = '0';
+    }
+  }, { once: false });
+
+  // Create message element for wrong password feedback
   
   let message = document.createElement('div');
   message.className = 'wow-message';
@@ -97,7 +135,7 @@
       revealImage.style.transform = 'scale(1)';
       revealImage.style.opacity = '1';
       document.querySelector('.wow-background').style.transform = 'scale(1)';
-      overlay.style.background = 'rgba(0, 0, 0, 0)';
+      // overlay.style.background = 'rgba(0, 0, 0, 0)';
     }
 
     if (scrollPercent >= 0.2 ) {
@@ -149,7 +187,7 @@
         window.scrollTo(0, startY + distance * easeProgress);
 
         // Only redirect after the scroll animation completes
-        if (progress < 0.68) {
+        if (progress < 0.7) {
           requestAnimationFrame(animateScroll);
         } else {
           window.location.href = 'we-only-want-original-sin.html';
@@ -173,6 +211,7 @@
   });
 
   window.addEventListener('scroll', handleScroll);
+  handleScroll();
 
   let promptVisible = false;
 
