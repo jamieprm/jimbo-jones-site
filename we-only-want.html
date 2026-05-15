@@ -86,12 +86,12 @@
 
     if (revealPercent > 0.6) {
       const t = (revealPercent - 0.6) / 0.4; // 0 to 1 over the last 40%
-      const scale = 1 + t * 3; // zoom up to 115%
+      const scale = 1 + Math.pow(t, 2) * 3; // zoom up to 115%
       const opacity = 1 - t;
       revealImage.style.transform = `scale(${scale})`;
       revealImage.style.opacity = opacity;
       document.querySelector('.wow-background').style.transform = `scale(${scale})`;
-      overlay.style.transition = 'background 4s ease-out';
+      overlay.style.transition = 'background 2s ease-out';
       overlay.style.background = `rgba(0, 0, 0, 1)`;
       document.querySelector('.wow-title').style.opacity = 0;
       document.querySelector('.passwordInput').style.opacity = opacity;
