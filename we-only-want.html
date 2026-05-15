@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>We Only Want…</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -36,16 +36,12 @@
       </div>
       <!-- <div class="wow-message" id="message"></div> -->
     </div>
-    
-    <!-- first player -->
-    <!-- <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=3138980524/size=small/bgcol=333333/linkcol=0f91ff/track=4054964082/transparent=true/" seamless><a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown">The Heat Death of My Hometown by Jimbo Jones</a></iframe> -->
 
   </div>
 
 
 
 </div>
-
 <script>
   const container = document.querySelector('.wow-container');
   const revealImage = document.querySelector('.wow-reveal-image');
@@ -56,7 +52,6 @@
   const submitBtn = document.getElementById('submitBtn');
   const wowWrapper = document.querySelector('.wow-reveal-wrapper');
   
-  // Message display element
   let message = document.createElement('div');
   message.className = 'wow-message';
   message.id = 'message';
@@ -64,58 +59,39 @@
 
   let isUnlocked = false;
 
-  // Blinking cursor effect
   const cursorStyle = document.createElement('style');
   cursorStyle.textContent = `
-    .wow-input:focus {
-      animation: cursorBlink 1s infinite;
-    }
-    
+    .wow-input:focus { animation: cursorBlink 1s infinite; }
     @keyframes cursorBlink {
-      0%, 49% {
-        caret-color: #101719;
-      }
-      50%, 100% {
-        caret-color: transparent;
-      }
+      0%, 49% { caret-color: #101719; }
+      50%, 100% { caret-color: transparent; }
     }
   `;
   document.head.appendChild(cursorStyle);
 
   function handleScroll() {
     const scrolled = window.scrollY;
-    const containerHeight = container.clientHeight;
-    const scrollPercent = scrolled / containerHeight;
+    const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = scrolled / maxScrollable;
 
-    // Lock scroll at 50% until password is correct
-    const maxScroll = (containerHeight * 0.5);
+    const maxScroll = maxScrollable * 0.25;
     if (scrolled > maxScroll && !isUnlocked) {
       window.scrollTo(0, maxScroll);
       return;
     }
 
-    // Reveal image from bottom up - stops at 50% scroll
-    const revealPercent = Math.min(scrollPercent * 1, 1);
-    // was: revealImage.style.bottom = `${-100 + (revealPercent * 100)}%`;
-    // revealImage.style.transform = `translateY(${100 - (revealPercent * 100)}%)`;
+    const revealPercent = Math.min(scrollPercent * 2, 1);
     revealImage.style.clipPath = `inset(${100 - (revealPercent * 100)}% 0 0 0)`;
 
-
-    // Show content at 50% scroll (after reveal completes)
-    if (scrollPercent >= 0.45) {
+    if (scrollPercent >= 0.2) {
       wowTitle.classList.add('visible');
       wowPromptContainer.classList.add('visible');
     } else {
       wowTitle.classList.remove('visible');
       wowPromptContainer.classList.remove('visible');
     }
-
-    // Change overlay opacity based on scroll
-    // const overlayOpacity = Math.max(0.3 - (scrollPercent * 0.5), 0);
-    // overlay.style.background = `rgba(0, 0, 0, 0)`;//${overlayOpacity}
   }
 
-  // Drop overlay to zero after 3 seconds from page load
   setTimeout(() => {
     overlay.style.transition = 'background 8s ease-out';
     overlay.style.background = 'rgba(0, 0, 0, 0)';
@@ -126,42 +102,9 @@
     
     if (answer === 'the earth') {
       isUnlocked = true;
+      wowWrapper.classList.add('wow-revealed');
       
-      // Smooth scroll to reveal the full image - scroll to 100% of container over 5 seconds
-      const containerHeight = container.clientHeight;
-      const scrollTo = containerHeight;
-      const startY = window.scrollY;
-      const distance = scrollTo - startY;
-      const duration = 4000; // 4 seconds
-      const startTime = Date.now();
-      
-      function animateScroll() {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function for smooth acceleration
-        const easeProgress = progress < 0.5 
-          ? 2 * progress * progress 
-          : -1 + (4 - 2 * progress) * progress;
-
-      
-        setTimeout(() => {
-          window.scrollTo(0, startY + distance * easeProgress);
-        }, 1000); // ~60fps
-
-        if (progress < 1) {
-          requestAnimationFrame(animateScroll);
-        }
-      }
-      
-      animateScroll();
-      
-      // Add revealed class after a brief delay
-      setTimeout(() => {
-        wowWrapper.classList.add('wow-revealed');
-      }, 100);
-      
-      message.textContent = 'Wrong password...';
+      message.textContent = '';
       message.classList.add('success');
       passwordInput.classList.add('success');
       passwordInput.disabled = true;
@@ -169,7 +112,33 @@
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.5';
       }
-      // passwordInput.style.opacity = '0.5';
+
+      const scrollTo = document.documentElement.scrollHeight - window.innerHeight;
+      const startY = window.scrollY;
+      const distance = scrollTo - startY;
+      const duration = 3000;
+      const startTime = Date.now();
+      
+      function animateScroll() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = progress < 0.5 
+          ? 2 * progress * progress 
+          : -1 + (4 - 2 * progress) * progress;
+
+        window.scrollTo(0, startY + distance * easeProgress);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        } else {
+          setTimeout(() => {
+            window.location.href = 'we-only-want-original-sin.html';
+          }, 500);
+        }
+      }
+      
+      animateScroll();
+
     } else {
       message.textContent = 'Wrong password...';
       message.classList.remove('success');
@@ -179,36 +148,42 @@
     }
   }
 
-  if (submitBtn) {
-    submitBtn.addEventListener('click', checkPassword);
-  }
+  if (submitBtn) submitBtn.addEventListener('click', checkPassword);
   
   passwordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      checkPassword();
-    }
+    if (e.key === 'Enter') checkPassword();
   });
 
   window.addEventListener('scroll', handleScroll);
 
-  // Focus input when it becomes visible
-  const observer = new MutationObserver(() => {
+  let promptVisible = false;
+
+  document.addEventListener('touchend', () => {
     if (wowPromptContainer.classList.contains('visible') && !isUnlocked) {
-      // Force focus to trigger mobile keyboard
-      passwordInput.focus();
-      passwordInput.click();
-      
-      // On mobile, ensure keyboard opens by scrolling input into view
-      if (window.innerWidth <= 768) {
+      if (!promptVisible) {
+        promptVisible = true;
         setTimeout(() => {
-          passwordInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 150);
+          if (!document.getElementById('tap-hint')) {
+            const hint = document.createElement('div');
+            hint.id = 'tap-hint';
+            hint.textContent = 'tap to type';
+            hint.style.cssText = `
+              position: fixed; bottom: 30%; left: 50%;
+              transform: translateX(-50%);
+              color: #e4e2dc; font-family: monospace;
+              font-size: 0.8rem; opacity: 0.5;
+              z-index: 10; pointer-events: none;
+            `;
+            document.body.appendChild(hint);
+          }
+        }, 2000);
+      } else {
+        passwordInput.focus();
+        const hint = document.getElementById('tap-hint');
+        if (hint) hint.remove();
       }
     }
   });
-
-  observer.observe(wowPromptContainer, { attributes: true, attributeFilter: ['class'] });
 </script>
-
 </body>
 </html>

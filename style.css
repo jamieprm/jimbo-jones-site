@@ -150,6 +150,8 @@ body.wow-page {
   position: relative;
   width: 100%;
   height: 400vh; /* Make page taller to allow scrolling */
+  touch-action: pan-y;
+
 }
 
 .wow-background {
