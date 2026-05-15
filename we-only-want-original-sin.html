@@ -2,20 +2,307 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>We Only Want The Earth</title>
+  <title>We Only Want The Earth — Original Sin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Page-specific styles */
+    body.original-sin-page {
+      background: #101719;
+      color: #e4e2dc;
+      font-family: monospace, system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .os-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* ── Video ── */
+    .os-video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 9 / 16;
+      margin: 0 auto;
+      transition: opacity 2s ease-out;
+    }
+
+    .os-video-wrapper.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .os-video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ── Content that appears after video ── */
+    .os-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      transition: opacity 2s ease-in;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .os-content.visible {
+      opacity: 1;
+    }
+
+    /* ── Bandcamp ── */
+    .os-bandcamp {
+      width: 100%;
+    }
+
+    .os-bandcamp iframe {
+      width: 100%;
+      height: 42px;
+      border: none;
+    }
+
+    /* ── Password ── */
+    .os-password-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .os-prompt-text {
+      font-size: 1.2rem;
+      color: #e4e2dc;
+      margin: 0;
+      letter-spacing: 0.05em;
+    }
+
+    .os-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .os-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #e4e2dc33;
+      color: #e4e2dc;
+      font-family: monospace, system-ui, sans-serif;
+      font-size: 1rem;
+      padding: 0.4rem 0.5rem;
+      text-align: center;
+      min-width: 200px;
+      outline: none;
+      caret-color: #e4e2dc;
+      transition: opacity 1s ease-out;
+    }
+
+    .os-input.success {
+      color: #4d859d;
+      border-bottom-color: #4d859d44;
+    }
+
+    .os-fake-cursor {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 1px;
+      height: 1em;
+      background: #e4e2dc;
+      animation: osCursorBlink 1s infinite;
+      pointer-events: none;
+    }
+
+    .os-input:focus ~ .os-fake-cursor,
+    .os-input.success ~ .os-fake-cursor {
+      display: none;
+    }
+
+    @keyframes osCursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .os-message {
+      font-size: 0.85rem;
+      color: #ae6039;
+      min-height: 1.2em;
+      text-align: center;
+      transition: opacity 1s ease-out;
+    }
+
+    /* ── Divider between sections ── */
+    .os-divider {
+      width: 1px;
+      height: 6rem;
+      background: linear-gradient(to bottom, transparent, #e4e2dc22, transparent);
+      margin: 0 auto;
+    }
+
+    /* ── Success fade ── */
+    .os-password-block.faded {
+      opacity: 0;
+      transition: opacity 1.5s ease-out;
+      pointer-events: none;
+    }
+  </style>
 </head>
 
-<body>
-    <main>
-        <h1>We Only Want The Earth</h1>
-        <p>Redirecting...</p>
-            <iframe 
-                id="bandcamp-player"
-                 style="border: 0; width: 100%; height: 42px; opacity: 1;" 
-                 src="https://bandcamp.com/EmbeddedPlayer/album=3138980524/size=small/bgcol=333333/linkcol=0687f5/track=4054964082/transparent=true/" seamless><a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown">The Heat Death of My Hometown by Jimbo Jones</a>
-            </iframe>
+<body class="original-sin-page">
 
-    </main>
+  <!-- ═══════════════════════════════════════
+       SECTION 1
+  ════════════════════════════════════════ -->
+  <section class="os-section" id="section-1">
+
+    <!-- Video (shown first, fades out on end) -->
+    <div class="os-video-wrapper" id="video-1-wrapper">
+      <iframe
+        id="yt-player-1"
+        src="https://www.youtube.com/embed/Obgnr9pc820?autoplay=1&mute=1&playsinline=1&controls=0&loop=0&rel=0&enablejsapi=1"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- Content shown after video -->
+    <div class="os-content" id="content-1">
+
+      <div class="os-bandcamp">
+        <iframe
+          src="https://bandcamp.com/EmbeddedPlayer/album=3138980524/size=small/bgcol=101719/linkcol=0687f5/track=4054964082/transparent=true/"
+          seamless>
+          <a href="https://jimbojonesdub.bandcamp.com/album/the-heat-death-of-my-hometown">The Heat Death of My Hometown by Jimbo Jones</a>
+        </iframe>
+      </div>
+
+      <div class="os-password-block" id="pw-block-1">
+        <p class="os-prompt-text">All Hail</p>
+        <div class="os-input-wrapper">
+          <input
+            type="text"
+            class="os-input"
+            id="pw-input-1"
+            autocomplete="off"
+            placeholder=""
+          />
+          <div class="os-fake-cursor"></div>
+        </div>
+        <div class="os-message" id="pw-msg-1"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Placeholder for more sections — duplicate and customise below -->
+  <div class="os-divider" id="section-2-divider" style="display:none;"></div>
+
+  <section class="os-section" id="section-2" style="display:none;">
+    <!-- 
+      Add section 2 content here — same structure as section 1:
+      video wrapper, os-content with bandcamp + password block
+    -->
+    <div class="os-content visible">
+      <p style="opacity:0.3; font-size:0.8rem;">[ next section goes here ]</p>
+    </div>
+  </section>
+
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // ── Section 1 setup ─────────────────────────────────────
+
+    const videoWrapper1 = document.getElementById('video-1-wrapper');
+    const content1      = document.getElementById('content-1');
+    const pwBlock1      = document.getElementById('pw-block-1');
+    const pwInput1      = document.getElementById('pw-input-1');
+    const pwMsg1        = document.getElementById('pw-msg-1');
+    let   hadWrong1     = false;
+
+    // YouTube player callback
+    let player1;
+    function onYouTubeIframeAPIReady() {
+      player1 = new YT.Player('yt-player-1', {
+        events: {
+          onStateChange: onPlayer1StateChange
+        }
+      });
+    }
+
+    function onPlayer1StateChange(event) {
+      // YT.PlayerState.ENDED = 0
+      if (event.data === YT.PlayerState.ENDED) {
+        fadeOutVideo1();
+      }
+    }
+
+    // Fallback: if YouTube API doesn't fire (e.g. autoplay blocked),
+    // reveal content after 60 seconds so the page isn't stuck
+    const fallbackTimer = setTimeout(fadeOutVideo1, 60000);
+
+    function fadeOutVideo1() {
+      clearTimeout(fallbackTimer);
+      videoWrapper1.classList.add('fade-out');
+      // After fade-out transition (2s), hide video and show content
+      setTimeout(() => {
+        videoWrapper1.style.display = 'none';
+        content1.classList.add('visible');
+        pwInput1.focus();
+      }, 2000);
+    }
+
+    // Password logic — section 1
+    pwInput1.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkPw1();
+    });
+
+    function checkPw1() {
+      const val = pwInput1.value.toLowerCase().trim();
+      if (val === 'max weber') {
+        // Success
+        pwInput1.classList.add('success');
+        pwInput1.disabled = true;
+        if (hadWrong1) {
+          pwMsg1.style.transition = 'opacity 1s ease-out';
+          pwMsg1.style.opacity = '0';
+        }
+        setTimeout(() => {
+          pwBlock1.classList.add('faded');
+        }, 800);
+        // Reveal section 2
+        setTimeout(() => {
+          document.getElementById('section-2-divider').style.display = 'block';
+          document.getElementById('section-2').style.display = 'flex';
+        }, 2000);
+      } else {
+        hadWrong1 = true;
+        pwMsg1.style.transition = 'none';
+        pwMsg1.style.opacity = '1';
+        pwMsg1.textContent = 'Wrong password...';
+        pwInput1.value = '';
+        pwInput1.focus();
+      }
+    }
+  </script>
+
 </body>
+</html>
