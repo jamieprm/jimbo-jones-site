@@ -18,7 +18,7 @@
 
   <div class="wow-overlay"></div>
 
-  <div class="wow-title" id="promptTitle">
+  <div class="wow-title">
     <h2>we only want</h2>
   </div>
 
@@ -32,9 +32,7 @@
           placeholder=""
           autocomplete="off"
         />
-        <!-- <button class="wow-button" id="submitBtn">Submit</button> -->
       </div>
-      <!-- <div class="wow-message" id="message"></div> -->
     </div>
 
   </div>
@@ -50,7 +48,6 @@
   const wowPromptContainer = document.querySelector('.wow-prompt-container');
   const overlay = document.querySelector('.wow-overlay');
   const passwordInput = document.getElementById('passwordInput');
-  const submitBtn = document.getElementById('submitBtn');
   const wowWrapper = document.querySelector('.wow-reveal-wrapper');
   
   let message = document.createElement('div');
@@ -84,6 +81,7 @@
     const revealPercent = Math.min(scrollPercent * 2, 1);
     revealImage.style.clipPath = `inset(${100 - (revealPercent * 100)}% 0 0 0)`;
 
+    // post 60% scroll zooming and fading out
     if (revealPercent > 0.6) {
       const t = (revealPercent - 0.6) / 0.4; // 0 to 1 over the last 40%
       const scale = 1 + Math.pow(t, 2) * 3; // zoom up to 115%
@@ -99,11 +97,10 @@
       revealImage.style.transform = 'scale(1)';
       revealImage.style.opacity = '1';
       document.querySelector('.wow-background').style.transform = 'scale(1)';
-      document.querySelector('.wow-title').style.opacity = '1';
       overlay.style.background = 'rgba(0, 0, 0, 0)';
     }
 
-    if (scrollPercent >= 0.2) {
+    if (scrollPercent >= 0.2 ) {
       wowTitle.classList.add('visible');
       wowPromptContainer.classList.add('visible');
     } else {
@@ -112,11 +109,13 @@
     }
   }
 
+  // Initial fade in of the overlay
   setTimeout(() => {
     overlay.style.transition = 'background 8s ease-out';
     overlay.style.background = 'rgba(0, 0, 0, 0)';
   }, 1000);
 
+  // Password check logic
   let hadWrongPassword = false;
 
   function checkPassword() {
@@ -127,10 +126,6 @@
       wowWrapper.classList.add('wow-revealed');
       passwordInput.classList.add('success');
       passwordInput.disabled = true;
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.5';
-      }
 
       // Only fade out the wrong password message if one was shown
       if (hadWrongPassword) {
@@ -153,7 +148,8 @@
 
         window.scrollTo(0, startY + distance * easeProgress);
 
-        if (progress < 1) {
+        // Only redirect after the scroll animation completes
+        if (progress < 0.68) {
           requestAnimationFrame(animateScroll);
         } else {
           window.location.href = 'we-only-want-original-sin.html';
@@ -171,8 +167,6 @@
       passwordInput.focus();
     }
   }
-
-  if (submitBtn) submitBtn.addEventListener('click', checkPassword);
   
   passwordInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') checkPassword();
