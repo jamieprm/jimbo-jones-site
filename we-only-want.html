@@ -7,29 +7,29 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="wow-page">
+<body class="page">
 
-<div class="wow-container">
-  <div class="wow-background"></div>
+<div class="container">
+  <div class="background"></div>
   
-  <div class="wow-reveal-wrapper">
-    <div class="wow-reveal-image"></div>
+  <div class="reveal-wrapper">
+    <div class="reveal-image"></div>
   </div>
 
-  <div class="wow-overlay"></div>
+  <div class="overlay"></div>
 
-  <div class="wow-title">
+  <div class="title">
     <h2>we only want</h2>
   </div>
 
-  <div class="wow-prompt-container">
-    <div class="wow-prompt">
-      <div class="wow-input-wrapper">
+  <div class="prompt-container">
+    <div class="prompt">
+      <div class="input-wrapper">
         <input 
           type="text" 
-          class="wow-input" 
+          class="input" 
           id="passwordInput" 
-          placeholder=""
+          placeholder="enter password"
           autocomplete="off"
         />
       </div>
@@ -42,13 +42,13 @@
 </div>
 
 <script>
-  const container = document.querySelector('.wow-container');
-  const revealImage = document.querySelector('.wow-reveal-image');
-  const wowTitle = document.querySelector('.wow-title');
-  const wowPromptContainer = document.querySelector('.wow-prompt-container');
-  const overlay = document.querySelector('.wow-overlay');
+  const container = document.querySelector('.container');
+  const revealImage = document.querySelector('.reveal-image');
+  const wowTitle = document.querySelector('.title');
+  const wowPromptContainer = document.querySelector('.prompt-container');
+  const overlay = document.querySelector('.overlay');
   const passwordInput = document.getElementById('passwordInput');
-  const wowWrapper = document.querySelector('.wow-reveal-wrapper');
+  const wowWrapper = document.querySelector('.reveal-wrapper');
 
   // Scroll hint
   let scrollHintTimer;
@@ -89,21 +89,21 @@
   // Create message element for wrong password feedback
   
   let message = document.createElement('div');
-  message.className = 'wow-message';
+  message.className = 'message';
   message.id = 'message';
   passwordInput.parentElement.parentElement.appendChild(message);
 
   let isUnlocked = false;
 
-  const cursorStyle = document.createElement('style');
-  cursorStyle.textContent = `
-    .wow-input:focus { animation: cursorBlink 1s infinite; }
-    @keyframes cursorBlink {
-      0%, 49% { caret-color: #101719; }
-      50%, 100% { caret-color: transparent; }
-    }
-  `;
-  document.head.appendChild(cursorStyle);
+  // const cursorStyle = document.createElement('style');
+  // cursorStyle.textContent = `
+  //   .input:focus { animation: cursorBlink 1s infinite; }
+  //   @keyframes cursorBlink {
+  //     0%, 49% { caret-color: #101719; }
+  //     50%, 100% { caret-color: transparent; }
+  //   }
+  // `;
+  // document.head.appendChild(cursorStyle);
 
   function handleScroll() {
     const scrolled = window.scrollY;
@@ -126,15 +126,15 @@
       const opacity = 1 - t;
       revealImage.style.transform = `scale(${scale})`;
       revealImage.style.opacity = opacity;
-      document.querySelector('.wow-background').style.transform = `scale(${scale})`;
+      document.querySelector('.background').style.transform = `scale(${scale})`;
       overlay.style.transition = 'background 2s ease-out';
       overlay.style.background = `rgba(0, 0, 0, 1)`;
-      document.querySelector('.wow-title').style.opacity = 0;
+      document.querySelector('.title').style.opacity = 0;
       document.querySelector('.passwordInput').style.opacity = opacity;
     } else {
       revealImage.style.transform = 'scale(1)';
       revealImage.style.opacity = '1';
-      document.querySelector('.wow-background').style.transform = 'scale(1)';
+      document.querySelector('.background').style.transform = 'scale(1)';
       // overlay.style.background = 'rgba(0, 0, 0, 0)';
     }
 
@@ -155,6 +155,7 @@
 
   // Password check logic
   let hadWrongPassword = false;
+  let wrongCount = 0; // ← add this
 
   function checkPassword() {
     const answer = passwordInput.value.toLowerCase().trim();
@@ -165,7 +166,6 @@
       passwordInput.classList.add('success');
       passwordInput.disabled = true;
 
-      // Only fade out the wrong password message if one was shown
       if (hadWrongPassword) {
         message.style.transition = 'opacity 1s ease-out';
         message.style.opacity = '0';
@@ -186,11 +186,12 @@
 
         window.scrollTo(0, startY + distance * easeProgress);
 
-        // Only redirect after the scroll animation completes
-        if (progress < 0.7) {
+        if (progress < 1) {
           requestAnimationFrame(animateScroll);
         } else {
-          window.location.href = 'we-only-want-original-sin.html';
+          setTimeout(() => {
+            window.location.href = 'we-only-want-original-sin.html';
+          }, 500);
         }
       }
 
@@ -198,11 +199,19 @@
 
     } else {
       hadWrongPassword = true;
+      wrongCount++; // ← increment
+
       message.style.transition = 'none';
       message.style.opacity = '1';
-      message.textContent = 'Wrong password...';
+
+      if (wrongCount >= 3) {
+        message.innerHTML = 'Read James Connolly'; // ← second line
+      } else {
+        message.textContent = 'Wrong password...';
+      }
+
       passwordInput.value = '';
-      passwordInput.focus();
+      // passwordInput.focus();
     }
   }
   
@@ -213,34 +222,44 @@
   window.addEventListener('scroll', handleScroll);
   handleScroll();
 
-  let promptVisible = false;
+  // // Auto-focus exactly once when prompt becomes visible
+  // let hasFocused = false;
+  // const focusObserver = new MutationObserver(() => {
+  //   if (wowPromptContainer.classList.contains('visible') && !hasFocused && !isUnlocked) {
+  //     hasFocused = true;
+  //     passwordInput.focus();
+  //   }
+  // });
+  // focusObserver.observe(wowPromptContainer, { attributes: true, attributeFilter: ['class'] });
 
-  document.addEventListener('touchend', () => {
-    if (wowPromptContainer.classList.contains('visible') && !isUnlocked) {
-      if (!promptVisible) {
-        promptVisible = true;
-        setTimeout(() => {
-          if (!document.getElementById('tap-hint')) {
-            const hint = document.createElement('div');
-            hint.id = 'tap-hint';
-            hint.textContent = 'tap to type';
-            hint.style.cssText = `
-              position: fixed; bottom: 30%; left: 50%;
-              transform: translateX(-50%);
-              color: #e4e2dc; font-family: monospace;
-              font-size: 0.8rem; opacity: 0.5;
-              z-index: 10; pointer-events: none;
-            `;
-            document.body.appendChild(hint);
-          }
-        }, 2000);
-      } else {
-        passwordInput.focus();
-        const hint = document.getElementById('tap-hint');
-        if (hint) hint.remove();
-      }
-    }
-  });
+  // let promptVisible = false;
+
+  // document.addEventListener('touchend', () => {
+  //   if (wowPromptContainer.classList.contains('visible') && !isUnlocked) {
+  //     if (!promptVisible) {
+  //       promptVisible = true;
+  //       setTimeout(() => {
+  //         if (!document.getElementById('tap-hint')) {
+  //           const hint = document.createElement('div');
+  //           hint.id = 'tap-hint';
+  //           hint.textContent = 'tap to type';
+  //           hint.style.cssText = `
+  //             position: fixed; bottom: 30%; left: 50%;
+  //             transform: translateX(-50%);
+  //             color: #e4e2dc; font-family: monospace;
+  //             font-size: 0.8rem; opacity: 0.5;
+  //             z-index: 10; pointer-events: none;
+  //           `;
+  //           document.body.appendChild(hint);
+  //         }
+  //       }, 2000);
+  //     } else {
+  //       passwordInput.focus();
+  //       const hint = document.getElementById('tap-hint');
+  //       if (hint) hint.remove();
+  //     }
+  //   }
+  // });
 </script>
 </body>
 </html>
