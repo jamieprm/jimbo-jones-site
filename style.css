@@ -111,13 +111,13 @@ nav a:hover {
 .fade-in-1 {
   opacity: 0;
   animation-name: fadeIn;
-  animation: fadeIn 5000ms ease-out forwards 2000ms;
+  animation: fadeIn 5000ms ease-out forwards 1000ms;
 }
 
 .fade-in-2 {
   opacity: 0;
   animation-name: fadeIn;
-  animation: fadeIn 5000ms ease-out forwards 3800ms;
+  animation: fadeIn 5000ms ease-out forwards 3000ms;
 }
 
 @keyframes fadeIn {
