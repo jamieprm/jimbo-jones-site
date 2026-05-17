@@ -13,44 +13,10 @@
       font-family: monospace, system-ui, sans-serif;
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+      max-height: 100vh;
     }
-
-    .os-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-      box-sizing: border-box;
-      position: relative;
-    }
-
-    /* ── Video ── */
-    .os-video-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 340px;
-      aspect-ratio: 9 / 16;
-      margin: 0 auto;
-      transition: opacity 2s ease-out;
-    }
-
-    .os-video-wrapper.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .os-video-wrapper iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-
-    /* ── Content that appears after video ── */
-    .os-content {
+/* 
+    .content {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -61,23 +27,11 @@
       max-width: 500px;
     }
 
-    .os-content.visible {
+    .content.visible {
       opacity: 1;
     }
 
-    /* ── Bandcamp ── */
-    .os-bandcamp {
-      width: 100%;
-    }
-
-    .os-bandcamp iframe {
-      width: 100%;
-      height: 42px;
-      border: none;
-    }
-
-    /* ── Password ── */
-    .os-password-block {
+    .password-block {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -85,24 +39,23 @@
       width: 100%;
     }
 
-    .os-prompt-text {
+    .prompt-text {
       font-size: 1.2rem;
       color: #e4e2dc;
       margin: 0;
       letter-spacing: 0.05em;
     }
 
-    .os-input-wrapper {
+    .input-wrapper {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .os-input {
+    .input {
       background: transparent;
       border: none;
-      border-bottom: 1px solid #e4e2dc33;
       color: #e4e2dc;
       font-family: monospace, system-ui, sans-serif;
       font-size: 1rem;
@@ -114,34 +67,14 @@
       transition: opacity 1s ease-out;
     }
 
-    .os-input.success {
+    .input.success {
       color: #4d859d;
       border-bottom-color: #4d859d44;
     }
 
-    .os-fake-cursor {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 1px;
-      height: 1em;
-      background: #e4e2dc;
-      animation: osCursorBlink 1s infinite;
-      pointer-events: none;
-    }
 
-    .os-input:focus ~ .os-fake-cursor,
-    .os-input.success ~ .os-fake-cursor {
-      display: none;
-    }
 
-    @keyframes osCursorBlink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
-    }
-
-    .os-message {
+    .message {
       font-size: 0.85rem;
       color: #ae6039;
       min-height: 1.2em;
@@ -149,20 +82,14 @@
       transition: opacity 1s ease-out;
     }
 
-    /* ── Divider between sections ── */
-    .os-divider {
-      width: 1px;
-      height: 6rem;
-      background: linear-gradient(to bottom, transparent, #e4e2dc22, transparent);
-      margin: 0 auto;
-    }
-
-    /* ── Success fade ── */
-    .os-password-block.faded {
+    .password-block.faded {
       opacity: 0;
       transition: opacity 1.5s ease-out;
       pointer-events: none;
     }
+      */
+
+
   </style>
 </head>
 
@@ -171,22 +98,22 @@
   <!-- ═══════════════════════════════════════
        SECTION 1
   ════════════════════════════════════════ -->
-  <section class="os-section" id="section-1">
-
+  <section class="section" id="section-1">
     <!-- Video (shown first, fades out on end) -->
-    <div class="os-video-wrapper" id="video-1-wrapper">
-      <iframe
+    <div class="video-wrapper" id="video-1-wrapper">
+      <!-- <iframe
         id="yt-player-1"
-        src="https://www.youtube.com/embed/Obgnr9pc820?autoplay=1&mute=1&playsinline=1&controls=0&loop=0&rel=0&enablejsapi=1"
+        src="https://www.youtube.com/embed/Obgnr9pc820?autoplay=1&mute=1&playsinline=1&controls=1&loop=0&rel=0&enablejsapi=1"
         allow="autoplay; encrypted-media"
         allowfullscreen>
-      </iframe>
+      </iframe> -->
+        <div id="yt-player-1"></div>
+
     </div>
 
     <!-- Content shown after video -->
-    <div class="os-content" id="content-1">
-
-      <div class="os-bandcamp">
+    <div class="content" id="content-1">
+      <div class="bandcamp">
         <iframe
           src="https://bandcamp.com/EmbeddedPlayer/album=3138980524/size=small/bgcol=101719/linkcol=0687f5/track=4054964082/transparent=true/"
           seamless>
@@ -194,33 +121,34 @@
         </iframe>
       </div>
 
-      <div class="os-password-block" id="pw-block-1">
-        <p class="os-prompt-text">All Hail</p>
-        <div class="os-input-wrapper">
+      <div class="prompt-container" id="pw-block-1">
+        <p class="prompt", style="font-size: 1.5rem;">All hail...</p>
+        <div class="input-wrapper">
           <input
             type="text"
-            class="os-input"
+            class="input"
             id="pw-input-1"
             autocomplete="off"
-            placeholder=""
+            placeholder="enter password"
+            style="color: #e4e2dc;"
           />
-          <div class="os-fake-cursor"></div>
+          <!-- <div class="fake-cursor"></div> -->
         </div>
-        <div class="os-message" id="pw-msg-1"></div>
+        <div class="message" id="pw-msg-1"></div>
       </div>
 
     </div>
   </section>
 
   <!-- Placeholder for more sections — duplicate and customise below -->
-  <div class="os-divider" id="section-2-divider" style="display:none;"></div>
+  <div class="divider" id="section-2-divider" style="display:none;"></div>
 
-  <section class="os-section" id="section-2" style="display:none;">
+  <section class="section" id="section-2" style="display:none;">
     <!-- 
       Add section 2 content here — same structure as section 1:
-      video wrapper, os-content with bandcamp + password block
+      video wrapper, content with bandcamp + password block
     -->
-    <div class="os-content visible">
+    <div class="content visible">
       <p style="opacity:0.3; font-size:0.8rem;">[ next section goes here ]</p>
     </div>
   </section>
@@ -241,18 +169,27 @@
     // YouTube player callback
     let player1;
     function onYouTubeIframeAPIReady() {
-      player1 = new YT.Player('yt-player-1', {
+    player1 = new YT.Player('yt-player-1', {
+        videoId: 'Obgnr9pc820',
+        playerVars: {
+        autoplay: 1,
+        mute: 1,
+        playsinline: 1,
+        controls: 1,
+        loop: 0,
+        rel: 0
+        },
         events: {
-          onStateChange: onPlayer1StateChange
+        onReady: (e) => e.target.playVideo(),
+        onStateChange: onPlayer1StateChange
         }
-      });
+    });
     }
 
     function onPlayer1StateChange(event) {
-      // YT.PlayerState.ENDED = 0
-      if (event.data === YT.PlayerState.ENDED) {
+    if (event.data === YT.PlayerState.ENDED) {
         fadeOutVideo1();
-      }
+    }
     }
 
     // Fallback: if YouTube API doesn't fire (e.g. autoplay blocked),
@@ -275,6 +212,8 @@
       if (e.key === 'Enter') checkPw1();
     });
 
+
+    let wrongCount = 0; // ← add this
     function checkPw1() {
       const val = pwInput1.value.toLowerCase().trim();
       if (val === 'max weber') {
@@ -294,12 +233,18 @@
           document.getElementById('section-2').style.display = 'flex';
         }, 2000);
       } else {
+        wrongCount++;
         hadWrong1 = true;
         pwMsg1.style.transition = 'none';
         pwMsg1.style.opacity = '1';
-        pwMsg1.textContent = 'Wrong password...';
+        if (wrongCount >= 2) {
+                pwMsg1.innerHTML = 'Listen carefully'; // ← second line
+            } else {
+                pwMsg1.textContent = 'Wrong password...';
+            }
+        // pwMsg1.innerHTML = 'Wrong password<br>listen carefully';
         pwInput1.value = '';
-        pwInput1.focus();
+        // pwInput1.focus();
       }
     }
   </script>
