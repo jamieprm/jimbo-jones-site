@@ -101,14 +101,12 @@
   <section class="section" id="section-1">
     <!-- Video (shown first, fades out on end) -->
     <div class="video-wrapper" id="video-1-wrapper">
-      <!-- <iframe
+      <iframe
         id="yt-player-1"
         src="https://www.youtube.com/embed/Obgnr9pc820?autoplay=1&mute=1&playsinline=1&controls=1&loop=0&rel=0&enablejsapi=1"
         allow="autoplay; encrypted-media"
         allowfullscreen>
-      </iframe> -->
-        <div id="yt-player-1"></div>
-
+      </iframe>
     </div>
 
     <!-- Content shown after video -->
@@ -169,27 +167,19 @@
     // YouTube player callback
     let player1;
     function onYouTubeIframeAPIReady() {
-    player1 = new YT.Player('yt-player-1', {
-        videoId: 'Obgnr9pc820',
-        playerVars: {
-        autoplay: 1,
-        mute: 1,
-        playsinline: 1,
-        controls: 1,
-        loop: 0,
-        rel: 0
-        },
+      player1 = new YT.Player('yt-player-1', {
         events: {
-        onReady: (e) => e.target.playVideo(),
-        onStateChange: onPlayer1StateChange
+          onStateChange: onPlayer1StateChange
         }
-    });
+      });
     }
 
     function onPlayer1StateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
+      // YT.PlayerState.ENDED = 0
+      if (event.data === YT.PlayerState.ENDED) {
         fadeOutVideo1();
-    }
+        pwBlock1.classList.add('visible');
+      }
     }
 
     // Fallback: if YouTube API doesn't fire (e.g. autoplay blocked),
