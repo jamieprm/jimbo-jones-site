@@ -12,6 +12,26 @@ main {
   text-align: left;
 }
 
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ── Divider between sections ── */
+.divider {
+  width: 1px;
+  height: 6rem;
+  background: linear-gradient(to bottom, transparent, #e4e2dc22, transparent);
+  margin: 0 auto;
+}
+
+
 h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -140,13 +160,13 @@ nav a:hover {
   }
 }
 
-body.wow-page {
+body.page {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
-.wow-container {
+.container {
   position: relative;
   width: 100%;
   height: 400vh; /* Make page taller to allow scrolling */
@@ -154,7 +174,7 @@ body.wow-page {
 
 }
 
-.wow-background {
+.background {
   position: fixed;
   display: flex;
   top: 0;
@@ -171,7 +191,7 @@ body.wow-page {
   /*animation: floatAround 12s ease-in-out infinite;*/
 }
 
-.wow-reveal-wrapper {
+.reveal-wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -181,7 +201,7 @@ body.wow-page {
   /* no overflow: hidden needed */
 }
 
-.wow-reveal-image {
+.reveal-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -197,7 +217,7 @@ body.wow-page {
 }
 
 
-.wow-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -208,7 +228,7 @@ body.wow-page {
   pointer-events: none;
 }
 
-.wow-title {
+.title {
   position: fixed;
   top: calc(50%);
   left: 50%;
@@ -221,19 +241,19 @@ body.wow-page {
   margin-bottom: 0;
 }
 
-.wow-title.visible {
+.title.visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-.wow-title h2 {
+.title h2 {
   font-size: 1.5rem;
   margin: 0;
   color: #e4e2dc;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.wow-text-delay {
+.text-delay {
   color: #e4e2dc;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont;
   top: 50%;
@@ -243,7 +263,7 @@ body.wow-page {
   animation: fadeIn 5000ms ease-out forwards 1500ms;
 }
 
-.wow-prompt-container {
+.prompt-container {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -256,12 +276,12 @@ body.wow-page {
   margin-top: 0;
 }
 
-.wow-prompt-container.visible {
+.prompt-container.visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-.wow-content {
+.content {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -278,67 +298,103 @@ body.wow-page {
   justify-content: center;
 }
 
-.wow-content.visible {
+.content.visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-.wow-content h2 {
+.content h2 {
   font-size: 1.5rem;
   margin: 0 0 1.5rem 0;
   color: #e4e2dc;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.wow-prompt {
+.prompt {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0rem;
 }
 
-.wow-prompt p {
+.prompt p {
   margin: 0;
   color: #edece8;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 1rem;
+  
 }
 
-.wow-input-wrapper {
+.input-wrapper {
   display: flex;
   align-items: center;
   text-align: center;
   gap: 0.5rem;
+  position: relative;
 }
 
-.wow-input {
+.input {
   padding: 0.5rem 1rem;
   border: none;
   background: transparent;
   align-items: center;
   text-align: center;
   color: #101719;
-  caret-color: #101719;
+  caret-color: #707475bd;
   font-family: monospace, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 1.2rem;
   min-width: 250px;
 }
 
-.wow-input:focus {
+.input:focus {
   outline: none;
-  caret-color: #101719;
+  caret-color: #4d859d;
 }
 
-.wow-input.success {
+/* Show placeholder only on mobile */
+.input::placeholder{
+  color: transparent;
+  font-size: 1rem;  
+}
+
+@media (max-width: 768px) {
+  .input::placeholder {
+    color: #707475bd;
+    opacity: 0.4;
+  }
+}
+
+.input.success {
   color: #4d859d;
   transition: color 0.5s ease-out;
 }
 
-.wow-input::placeholder {
-  color: #101719;
+/* cursor blinking  */
+/* .fake-cursor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 1em;
+  background: #e4e2dc;
+  animation: osCursorBlink 1s infinite;
+  pointer-events: none;
+} 
+
+.input:focus ~ .fake-cursor,
+.input.success ~ .fake-cursor {
+  display: none;
 }
 
-.wow-button {
+@keyframes osCursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+} */
+
+
+/* button */
+.button {
   padding: 0.5rem 1.5rem;
   border: 1px solid #e4e2dc;
   background: transparent;
@@ -349,30 +405,69 @@ body.wow-page {
   transition: all 0.2s;
 }
 
-.wow-button:hover {
+.button:hover {
   background: #e4e2dc;
   color: #101719;
 }
 
-.wow-message {
+.message {
   color:#ae6039 ;
-  margin-top: 1rem;
+  margin-top: 0rem;
   min-height: 1.5rem;
   font-size: 0.9rem;
   transition: opacity 2s ease-out;
 
 }
 
-.wow-message.success {
+.message.success {
   opacity: 0;
   transition: opacity 1s ease-out;
 }
 
-.wow-revealed .wow-reveal-image {
-  clip-path: inset(0 0 0 0);
+.revealed .reveal-image {
+  clip-path: inset(0 0 0 0); 
 }
 
-.wow-revealed .wow-overlay {
+.revealed .overlay {
   background: rgba(0, 0, 0, 0);
   pointer-events: none;
+}
+
+/* ── Video ── */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  /* height: 100%; */
+  max-width: 340px;
+  aspect-ratio: 9 / 16;
+  margin: 0 auto;
+  transition: opacity 2s ease-out;
+  z-index: 5;
+}
+
+.video-wrapper.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+
+/* ── Bandcamp ── */
+.bandcamp {
+  width: 100%;
+  transform: translate(0%, -100%);
+  opacity: 1;
+
+}
+
+.bandcamp iframe {
+  width: 100%;
+  height: 42px;
+  border: none;
 }
