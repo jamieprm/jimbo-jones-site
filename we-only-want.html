@@ -204,14 +204,13 @@
       message.style.transition = 'none';
       message.style.opacity = '1';
 
-      if (wrongCount >= 3) {
+      if (wrongCount >= 2) {
         message.innerHTML = 'Read James Connolly'; // ← second line
       } else {
         message.textContent = 'Wrong password...';
       }
 
       passwordInput.value = '';
-      // passwordInput.focus();
     }
   }
   
@@ -222,15 +221,15 @@
   window.addEventListener('scroll', handleScroll);
   handleScroll();
 
-  // // Auto-focus exactly once when prompt becomes visible
-  // let hasFocused = false;
-  // const focusObserver = new MutationObserver(() => {
-  //   if (wowPromptContainer.classList.contains('visible') && !hasFocused && !isUnlocked) {
-  //     hasFocused = true;
-  //     passwordInput.focus();
-  //   }
-  // });
-  // focusObserver.observe(wowPromptContainer, { attributes: true, attributeFilter: ['class'] });
+  // Auto-focus exactly once when prompt becomes visible
+  let hasFocused = false;
+  const focusObserver = new MutationObserver(() => {
+    if (wowPromptContainer.classList.contains('visible') && !hasFocused && !isUnlocked) {
+      hasFocused = true;
+      passwordInput.focus();
+    }
+  });
+  focusObserver.observe(wowPromptContainer, { attributes: true, attributeFilter: ['class'] });
 
   // let promptVisible = false;
 
