@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>We Only Want The Earth — Pure Hedonism</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Page-specific styles */
+    body.original-sin-page {
+      background: #101719;
+      color: #e4e2dc;
+      font-family: monospace, system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      max-height: 100vh;
+    }
+  </style>
+</head>
+
+<body class="original-sin-page">
+  <!-- ═══════════════════════════════════════
+       SECTION 1
+  ════════════════════════════════════════ -->
+  <section class="section" id="section-1">
+    <!-- Video (shown first, fades out on end) -->
+    <div class="video-wrapper" id="video-1-wrapper">
+      <iframe
+        id="yt-player-1"
+        src="https://www.youtube.com/embed/HyUATnZqpvw?autoplay=1&mute=1&playsinline=1&controls=1&loop=0&rel=0&enablejsapi=1"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- Content shown after video -->
+      <div class="content" id="content-1">
+        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%3Atracks%3A2306858360%3Fsecret_token%3Ds-xdjTNv6Ztux&color=%23647c84&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jimbo_jones_dub" title="Jimbo Jones" target="_blank" style="color: #cccccc; text-decoration: none;">Jimbo Jones</a> · <a href="https://soundcloud.com/jimbo_jones_dub/pure-hedonism/s-xdjTNv6Ztux" title="Pure Hedonism" target="_blank" style="color: #cccccc; text-decoration: none;">Pure Hedonism</a></div>
+      </div>
+
+    
+
+  <!-- Placeholder for more sections — duplicate and customise below -->
+  <div class="divider" id="section-2-divider" style="display:none;"></div>
+
+  <section class="section" id="section-2" style="display:none;">
+    <!-- 
+      Add section 2 content here — same structure as section 1:
+      video wrapper, content with bandcamp + password block
+    -->
+    <div class="content visible">
+      <p style="opacity:0.3; font-size:0.8rem;">[ next section goes here ]</p>
+    </div>
+  </section>
+
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // ── Section 1 setup ─────────────────────────────────────
+
+    const videoWrapper1 = document.getElementById('video-1-wrapper');
+    const content1      = document.getElementById('content-1');
+    const pwBlock1      = document.getElementById('pw-block-1');
+    const pwInput1      = document.getElementById('pw-input-1');
+    const pwMsg1        = document.getElementById('pw-msg-1');
+    let   hadWrong1     = false;
+
+    // YouTube player callback
+    let player1;
+    function onYouTubeIframeAPIReady() {
+      player1 = new YT.Player('yt-player-1', {
+        events: {
+          onStateChange: onPlayer1StateChange
+        }
+      });
+    }
+
+    function onPlayer1StateChange(event) {
+      // YT.PlayerState.ENDED = 0
+      if (event.data === YT.PlayerState.ENDED) {
+        fadeOutVideo1();
+        pwBlock1.classList.add('visible');
+      }
+    }
+
+    // Fallback: if YouTube API doesn't fire (e.g. autoplay blocked),
+    // reveal content after 60 seconds so the page isn't stuck
+    const fallbackTimer = setTimeout(fadeOutVideo1, 60000);
+
+    function fadeOutVideo1() {
+      clearTimeout(fallbackTimer);
+      videoWrapper1.classList.add('fade-out');
+      // After fade-out transition (2s), hide video and show content
+      setTimeout(() => {
+        videoWrapper1.style.display = 'none';
+        content1.classList.add('visible');
+        pwInput1.focus();
+      }, 2000);
+    }
+
+    // Password logic — section 1
+    pwInput1.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkPw1();
+    });
+
+
+    let wrongCount = 0; // ← add this
+    function checkPw1() {
+      const val = pwInput1.value.toLowerCase().trim();
+      if (val === 'max weber') {
+        // Success
+        pwInput1.classList.add('success');
+        pwInput1.disabled = true;
+        if (hadWrong1) {
+          pwMsg1.style.transition = 'opacity 1s ease-out';
+          pwMsg1.style.opacity = '0';
+        }
+        setTimeout(() => {
+          pwBlock1.classList.add('faded');
+        }, 800);
+        // Reveal section 2
+        setTimeout(() => {
+          document.getElementById('section-2-divider').style.display = 'block';
+          document.getElementById('section-2').style.display = 'flex';
+        }, 2000);
+      } else {
+        wrongCount++;
+        hadWrong1 = true;
+        pwMsg1.style.transition = 'none';
+        pwMsg1.style.opacity = '1';
+        if (wrongCount >= 3) {
+                pwMsg1.innerHTML = 'Listen carefully'; // ← second line
+            } else {
+                pwMsg1.textContent = 'Wrong password...';
+            }
+        // pwMsg1.innerHTML = 'Wrong password<br>listen carefully';
+        pwInput1.value = '';
+        // pwInput1.focus();
+      }
+    }
+  </script>
+
+</body>
+</html>
