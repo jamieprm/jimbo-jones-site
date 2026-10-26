@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>We Only Want The Earth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Page-specific styles */
+    body.original-sin-page {
+      background: #101719;
+      color: #e4e2dc;
+      font-family: monospace, system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      max-height: 100vh;
+    }
+
+    .bandcamp-player {
+      display: block;
+      width: min(400px, calc(100vw - 2rem));
+      height: 836px;
+      border: 0;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body class="original-sin-page">
+  <!-- ═══════════════════════════════════════
+       SECTION 1
+  ════════════════════════════════════════ -->
+  <section class="section" id="section-1">
+    <!-- Video (shown first, fades out on end) -->
+    <div class="video-wrapper" id="video-1-wrapper">
+      <iframe
+        id="yt-player-1"
+        src="https://www.youtube.com/embed/HyUATnZqpvw?autoplay=1&mute=1&playsinline=1&controls=1&loop=0&rel=0&enablejsapi=1"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- Content shown after video -->
+    <div class="content" id="content-1">
+      <iframe
+        class="bandcamp-player"
+        title="We Only Want The Earth by Jimbo Jones on Bandcamp"
+        src="https://bandcamp.com/EmbeddedPlayer/album=3128171189/size=large/bgcol=ffffff/linkcol=0687f5/transparent=true/tracklist=true/tracks=1013661380,3222091201,4256479615,2153824607,2472795907,795989572,4056832697,1377388628,1712979489,1585055749,4202123940/esig=96142f65ddcbd35e9d1dcb6f1cffe0fe/"
+        allow="autoplay"
+        seamless>
+        <a href="https://jimbojonesdub.bandcamp.com/album/we-only-want-the-earth">We Only Want the Earth by Jimbo Jones</a>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- Placeholder for more sections — duplicate and customise below -->
+  <div class="divider" id="section-2-divider" style="display:none;"></div>
+
+  <section class="section" id="section-2" style="display:none;">
+    <!-- 
+      Add section 2 content here — same structure as section 1:
+      video wrapper, content with bandcamp + password block
+    -->
+    <div class="content visible">
+      <p style="opacity:0.3; font-size:0.8rem;">[ next section goes here ]</p>
+    </div>
+  </section>
+
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // ── Section 1 setup ─────────────────────────────────────
+
+    const videoWrapper1 = document.getElementById('video-1-wrapper');
+    const content1      = document.getElementById('content-1');
+
+    // YouTube player callback
+    let player1;
+    function onYouTubeIframeAPIReady() {
+      player1 = new YT.Player('yt-player-1', {
+        events: {
+          onStateChange: onPlayer1StateChange
+        }
+      });
+    }
+
+    function onPlayer1StateChange(event) {
+      // YT.PlayerState.ENDED = 0
+      if (event.data === YT.PlayerState.ENDED) {
+        fadeOutVideo1();
+      }
+    }
+
+    // Fallback: if YouTube API doesn't fire (e.g. autoplay blocked),
+    // reveal content after 60 seconds so the page isn't stuck
+    const fallbackTimer = setTimeout(fadeOutVideo1, 60000);
+
+    function fadeOutVideo1() {
+      clearTimeout(fallbackTimer);
+      videoWrapper1.classList.add('fade-out');
+      // After fade-out transition (2s), hide video and show content
+      setTimeout(() => {
+        videoWrapper1.style.display = 'none';
+        content1.classList.add('visible');
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
